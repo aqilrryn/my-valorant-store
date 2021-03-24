@@ -1,5 +1,6 @@
 import { ApolloServer, gql } from "apollo-server";
 import axios from "axios";
+import skins from "./skins";
 import weapons from "./weapons";
 
 // Check if required env variables exist
@@ -15,8 +16,8 @@ axios.interceptors.response.use((response) => {
 
 // Merge types & resolvers
 const server = new ApolloServer({
-  typeDefs: [typeDef, weapons.typeDef],
-  resolvers: [weapons.resolvers],
+  typeDefs: [typeDef, weapons.typeDef, skins.typeDef],
+  resolvers: [weapons.resolvers, skins.resolvers],
 });
 
 // Start server

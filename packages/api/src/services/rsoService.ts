@@ -1,4 +1,3 @@
-import fs from "fs";
 const axios = require("axios").default;
 import tough from "tough-cookie";
 import { scrape } from "./scrapingService";

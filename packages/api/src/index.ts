@@ -1,29 +1,25 @@
-// import { scrape } from "./services/scrapingService";
+import { ApolloServer, gql } from "apollo-server";
+import axios from "axios";
+import weapons from "./weapons";
 
-import { authenticate } from "./services/rsoService";
-
+// Check if required env variables exist
 require("dotenv-safe").config();
 
-try {
-  console.clear();
-  /* 
-  console.log("start scraper");
-  scrape(
-    "https://valorant.fandom.com/wiki/Weapon_Skins",
-    "Prime",
-    "Classic"
-  ).then((result) => {
-    console.log(result);
-    console.log("stop scraper");
-  }); */
+const typeDef = gql`
+  type Query
+`;
 
-  authenticate()
-    .then((token) => {
-      console.log(token);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-} catch (error) {
-  console.log(error);
-}
+axios.interceptors.response.use((response) => {
+  return response.status === 200 ? response.data : response;
+});
+
+// Merge types & resolvers
+const server = new ApolloServer({
+  typeDefs: [typeDef, weapons.typeDef],
+  resolvers: [weapons.resolvers],
+});
+
+// Start server
+server.listen().then(({ url }: { url: string }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});

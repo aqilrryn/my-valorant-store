@@ -8,10 +8,10 @@ export const scrape = async (url: string, collection: string, name: string) => {
 
   let result = await page.evaluate(
     (collection: string, name: string) => {
-      // const span = document.querySelector(`span#${collection}_Collection`);
       const span = document.querySelector(
         `span[id*="${collection}_Collection"]`
       );
+
       const heading = span?.parentElement;
       const table = heading?.nextElementSibling as HTMLTableElement;
 

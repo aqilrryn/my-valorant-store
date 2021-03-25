@@ -1,31 +1,24 @@
-import React from 'react';
-import { useQuery, gql } from '@apollo/client';
-import './App.css';
+import React from 'react'
+import tw from 'twin.macro'
+import { Button, Logo } from './components'
 
-const WEAPONS = gql`
-  query GetWeapons {
-    weapons {
-      uuid
-      displayName
-    }
-  }
-`;
+const styles = {
+  // Move long class sets out of jsx to keep it scannable
+  container: ({ hasBackground }: { hasBackground: boolean }) => [
+    tw`flex flex-col items-center justify-center h-screen`,
+    hasBackground && tw`bg-gradient-to-b from-electric to-ribbon`,
+  ],
+}
 
-const App: React.FC = () => {
-  const { loading, error, data } = useQuery(WEAPONS);
+const App = () => (
+  <div css={styles.container({ hasBackground: true })}>
+    <div tw="flex flex-col justify-center h-full gap-y-5">
+      <Button variant="primary">Submit</Button>
+      <Button variant="secondary">Cancel</Button>
+      <Button isSmall>Close</Button>
+    </div>
+    <Logo />
+  </div>
+)
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return data.weapons.map(
-    ({ uuid, displayName }: { uuid: string; displayName: string }) => (
-      <div key={uuid}>
-        <p>
-          {uuid}: {displayName}
-        </p>
-      </div>
-    ),
-  );
-};
-
-export default App;
+export default App

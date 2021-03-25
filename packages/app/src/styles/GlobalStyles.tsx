@@ -9,7 +9,7 @@ const CustomStyles = createGlobalStyle`
 	}
 `
 
-const GlobalStyles = () => (
+const GlobalStyles: React.FC = () => (
   <>
     <BaseStyles />
     <CustomStyles />

@@ -1,12 +1,13 @@
-import tw, { css, styled, theme } from 'twin.macro'
+import tw, { styled, css, theme } from 'twin.macro'
 
-interface ButtonProps {
+// Export interface for Button.stories.tsx
+export interface ButtonProps {
   variant?: 'primary' | 'secondary'
   isSmall?: boolean
 }
 
 const Button = styled.button(({ variant, isSmall }: ButtonProps) => [
-  // The common button styles
+  // The common button styles added with the tw import
   tw`px-8 py-2 rounded focus:outline-none transform duration-75`,
 
   // Use the variant grouping feature to add variants to multiple classes
@@ -23,7 +24,7 @@ const Button = styled.button(({ variant, isSmall }: ButtonProps) => [
     tw`border-2 border-yellow-600`,
   ],
 
-  // Conditional props can be added
+  // Conditional props can be used
   isSmall ? tw`text-sm` : tw`text-lg`,
 
   // The theme import can supply values from your tailwind.config.js

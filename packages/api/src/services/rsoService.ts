@@ -12,7 +12,16 @@ const AUTH_URL = "https://auth.riotgames.com/api/v1/authorization";
 const ENTITLEMENTS_URL = "https://entitlements.auth.riotgames.com/api/token/v1";
 const USER_URL = "https://auth.riotgames.com/userinfo";
 
-export const authenticate = async (): Promise<string> => {
+const authenticate = async (): Promise<
+  | {
+      headers: {
+        Authorization: string;
+        "X-Riot-Entitlements-JWT"?: string | undefined;
+      };
+      userId: string;
+    }
+  | undefined
+> => {
   const authData = {
     client_id: "play-valorant-web-prod",
     nonce: "1",
@@ -80,7 +89,37 @@ export const authenticate = async (): Promise<string> => {
     "X-Riot-Entitlements-JWT": authParamMap.get("entitlements_token"),
   };
 
-  response = await axios.get(
+  return { headers, userId };
+};
+
+export const getValorantClientVersion = async (): Promise<
+  string | undefined
+> => {
+  const { data } = await axios.get(`https://valorant-api.com/v1/version`);
+
+  if (!data) return undefined;
+
+  const versionData = data.data as {
+    branch: string;
+    version: string;
+    buildVersion: string;
+    buildData: string;
+  };
+
+  return `${versionData?.branch}-shipping-${versionData?.buildVersion}-${
+    versionData?.version.split(".").reverse()[0]
+  }`;
+};
+
+export const getPlayerStore = async () => {
+  const auth = await authenticate();
+
+  const headers = auth?.headers;
+  const userId = auth?.userId;
+
+  if (!headers || !userId) return undefined;
+
+  let response = await axios.get(
     `https://pd.eu.a.pvp.net/store/v2/storefront/${userId}`,
     {
       jar: cookieJar,
@@ -93,6 +132,8 @@ export const authenticate = async (): Promise<string> => {
     response.data["SkinsPanelLayout"]["SingleItemOffers"];
 
   const clientVersion = await getValorantClientVersion();
+
+  if (!clientVersion) return;
 
   response = await axios.get(
     `https://shared.eu.a.pvp.net/content-service/v2/content`,
@@ -124,24 +165,5 @@ export const authenticate = async (): Promise<string> => {
       id: s.ID.toLowerCase(),
     }));
 
-  const storeItems = itemIds.map((itemId) =>
-    skins.find((s) => s.id === itemId)
-  );
-
-  return "";
-};
-
-const getValorantClientVersion = async (): Promise<string> => {
-  const { data } = await axios.get(`https://valorant-api.com/v1/version`);
-
-  const versionData = data.data as {
-    branch: string;
-    version: string;
-    buildVersion: string;
-    buildData: string;
-  };
-
-  return `${versionData?.branch}-shipping-${versionData?.buildVersion}-${
-    versionData?.version.split(".").reverse()[0]
-  }`;
+  return itemIds.map((itemId) => skins.find((s) => s.id === itemId));
 };

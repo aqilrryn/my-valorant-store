@@ -1,6 +1,6 @@
-/* import { ApolloServer, gql } from "apollo-server";
-import axios from "axios";
+import { ApolloServer, gql } from "apollo-server";
 import skins from "./skins";
+import store from "./store";
 import weapons from "./weapons";
 
 // Check if required env variables exist
@@ -10,35 +10,17 @@ const typeDef = gql`
   type Query
 `;
 
-axios.interceptors.response.use((response) => {
+/* axios.interceptors.response.use((response) => {
   return response.status === 200 ? response.data : response;
-});
+}); */
 
 // Merge types & resolvers
 const server = new ApolloServer({
-  typeDefs: [typeDef, weapons.typeDef, skins.typeDef],
-  resolvers: [weapons.resolvers, skins.resolvers],
+  typeDefs: [typeDef, weapons.typeDef, skins.typeDef, store.typeDef],
+  resolvers: [weapons.resolvers, skins.resolvers, store.resolvers],
 });
 
 // Start server
 server.listen().then(({ url }: { url: string }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
- */
-
-import { authenticate } from "./services/rsoService";
-
-require("dotenv-safe").config();
-
-try {
-  console.clear();
-  authenticate()
-    .then((token) => {
-      console.log(token);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-} catch (error) {
-  console.log(error);
-}

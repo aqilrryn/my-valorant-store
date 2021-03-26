@@ -18,10 +18,10 @@ export interface Level {
 export interface Skin {
   uuid: string;
   displayName: string;
-  themeUuid: string;
-  contentTierUuid: string;
-  displayIcon: string;
-  assetPath: string;
-  chromas: Chroma[];
-  levels: Level[];
+  themeUuid?: string;
+  contentTierUuid?: string;
+  displayIcon?: string;
+  assetPath?: string;
+  chromas?: Chroma[];
+  levels?: Level[];
 }

@@ -1,4 +1,4 @@
-import { ApolloServer, gql } from "apollo-server";
+/* import { ApolloServer, gql } from "apollo-server";
 import axios from "axios";
 import skins from "./skins";
 import weapons from "./weapons";
@@ -24,3 +24,21 @@ const server = new ApolloServer({
 server.listen().then(({ url }: { url: string }) => {
   console.log(`🚀  Server ready at ${url}`);
 });
+ */
+
+import { authenticate } from "./services/rsoService";
+
+require("dotenv-safe").config();
+
+try {
+  console.clear();
+  authenticate()
+    .then((token) => {
+      console.log(token);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+} catch (error) {
+  console.log(error);
+}

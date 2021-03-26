@@ -1,6 +1,5 @@
 const axios = require("axios").default;
 import tough from "tough-cookie";
-import { scrape } from "./scrapingService";
 
 const axiosCookieJarSupport = require("axios-cookiejar-support").default;
 
@@ -93,6 +92,8 @@ export const authenticate = async (): Promise<string> => {
   const itemIds: string[] =
     response.data["SkinsPanelLayout"]["SingleItemOffers"];
 
+  const clientVersion = await getValorantClientVersion();
+
   response = await axios.get(
     `https://shared.eu.a.pvp.net/content-service/v2/content`,
     {
@@ -100,7 +101,7 @@ export const authenticate = async (): Promise<string> => {
       withCredentials: true,
       headers: {
         ...headers,
-        "X-Riot-ClientVersion": "release-02.01-shipping-6-511946",
+        "X-Riot-ClientVersion": clientVersion,
         "X-Riot-ClientPlatform": Buffer.from(
           JSON.stringify({
             platformType: "PC",
@@ -123,25 +124,24 @@ export const authenticate = async (): Promise<string> => {
       id: s.ID.toLowerCase(),
     }));
 
-  console.log(itemIds);
-
   const storeItems = itemIds.map((itemId) =>
     skins.find((s) => s.id === itemId)
   );
 
-  console.log(storeItems);
-
-  storeItems.forEach((item) => {
-    if (item) {
-      scrape(
-        "https://valorant.fandom.com/wiki/Weapon_Skins",
-        item.name.split(" ")[0],
-        item.name.split(" ")[1]
-      ).then((result) => {
-        console.log(result);
-      });
-    }
-  });
-
   return "";
+};
+
+const getValorantClientVersion = async (): Promise<string> => {
+  const { data } = await axios.get(`https://valorant-api.com/v1/version`);
+
+  const versionData = data.data as {
+    branch: string;
+    version: string;
+    buildVersion: string;
+    buildData: string;
+  };
+
+  return `${versionData?.branch}-shipping-${versionData?.buildVersion}-${
+    versionData?.version.split(".").reverse()[0]
+  }`;
 };

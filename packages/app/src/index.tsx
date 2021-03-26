@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom'
 import GlobalStyles from './styles/GlobalStyles'
 import App from './App'
 
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/',
+  cache: new InMemoryCache(),
+})
+
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyles />
-    <App />
+    <ApolloProvider client={client}>
+      <GlobalStyles />
+      <App />
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )

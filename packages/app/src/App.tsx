@@ -1,21 +1,85 @@
 import React from 'react'
-import tw, { styled } from 'twin.macro'
-import Button from './components/button/Button'
+import tw, { css, styled } from 'twin.macro'
+import { gql, useQuery } from '@apollo/client'
 
-const App: React.FC = () => (
-  <Wrapper hasBackground={false}>
+// import Button from './components/button/Button'
+
+const PLAYER_STORE = gql`
+  query GetPlayerStore {
+    store {
+      skins {
+        uuid
+        displayName
+        displayIcon
+      }
+    }
+  }
+`
+const App: React.FC = () => {
+  const { loading, error, data } = useQuery(PLAYER_STORE)
+
+  if (loading) {
+    return (
+      <Wrapper>
+        <p>Loading...</p>
+      </Wrapper>
+    )
+  }
+
+  if (error) {
+    return (
+      <Wrapper>
+        <p>Error :(</p>
+      </Wrapper>
+    )
+  }
+
+  return (
+    <Wrapper>
+      <ul>
+        {data.store.skins.map(
+          ({
+            uuid,
+            displayName,
+            displayIcon,
+          }: {
+            uuid: string
+            displayName: string
+            displayIcon: string
+          }) => (
+            <li key={uuid}>
+              <img src={displayIcon} alt={displayName} />
+            </li>
+          ),
+        )}
+      </ul>
+    </Wrapper>
+  )
+}
+
+const Wrapper = styled.ul(() => [
+  tw`
+    flex flex-col justify-center items-center h-full max-h-full text-white
+  `,
+  css`
+    background-color: rgba(32, 33, 36, 255);
+  `,
+])
+
+{
+  /* <Wrapper hasBackground={false}>
     <div tw="flex flex-col justify-center h-full gap-y-5">
       <Button variant="primary">Submit</Button>
       <Button variant="secondary">Cancel</Button>
       <Button isSmall>Close</Button>
     </div>
-  </Wrapper>
-)
+  </Wrapper> */
+}
 
-const Wrapper = styled.div<{ hasBackground: boolean }>`
+/* const Wrapper = styled.div<{ hasBackground: boolean }>`
   ${tw`flex flex-col items-center justify-center h-screen`}
   ${({ hasBackground }) =>
     hasBackground && tw`bg-gradient-to-b from-electric to-ribbon`}
-`
+` */
 
 export default App

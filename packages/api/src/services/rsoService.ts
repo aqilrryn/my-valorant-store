@@ -1,11 +1,9 @@
 const axios = require("axios").default;
-import tough from "tough-cookie";
+import tough, { CookieJar } from "tough-cookie";
 
 const axiosCookieJarSupport = require("axios-cookiejar-support").default;
 
 axiosCookieJarSupport(axios);
-
-const cookieJar = new tough.CookieJar();
 
 const OPT_IN_URL = "https://playvalorant.com/opt_in";
 const AUTH_URL = "https://auth.riotgames.com/api/v1/authorization";
@@ -19,9 +17,12 @@ const authenticate = async (): Promise<
         "X-Riot-Entitlements-JWT"?: string | undefined;
       };
       userId: string;
+      cookieJar: CookieJar;
     }
   | undefined
 > => {
+  const cookieJar = new tough.CookieJar();
+
   const authData = {
     client_id: "play-valorant-web-prod",
     nonce: "1",
@@ -34,6 +35,8 @@ const authenticate = async (): Promise<
     withCredentials: true,
   });
 
+  if (!response) throw new Error("Unable to authenticate");
+
   const credentials = {
     type: "auth",
     username: process.env["USERNAME"],
@@ -44,6 +47,9 @@ const authenticate = async (): Promise<
     jar: cookieJar,
     withCredentials: true,
   });
+
+  if (!response)
+    throw new Error("Unable to authenticate with the provided credentials");
 
   const authParamMap = new Map<string, string>();
 
@@ -69,6 +75,8 @@ const authenticate = async (): Promise<
     }
   );
 
+  if (!response) throw new Error("Unable to fetch entitlements");
+
   if (response?.data?.entitlements_token.constructor === String)
     authParamMap.set("entitlements_token", response?.data?.entitlements_token);
 
@@ -82,6 +90,8 @@ const authenticate = async (): Promise<
     }
   );
 
+  if (!response) throw new Error("Unable to fetch user info");
+
   const userId = response.data?.sub;
 
   headers = {
@@ -89,7 +99,7 @@ const authenticate = async (): Promise<
     "X-Riot-Entitlements-JWT": authParamMap.get("entitlements_token"),
   };
 
-  return { headers, userId };
+  return { headers, userId, cookieJar };
 };
 
 export const getValorantClientVersion = async (): Promise<
@@ -112,10 +122,17 @@ export const getValorantClientVersion = async (): Promise<
 };
 
 export const getPlayerStore = async () => {
-  const auth = await authenticate();
+  let auth = undefined;
+
+  try {
+    auth = await authenticate();
+  } catch (error) {
+    console.log(error);
+  }
 
   const headers = auth?.headers;
   const userId = auth?.userId;
+  const cookieJar = auth?.cookieJar;
 
   if (!headers || !userId) return undefined;
 

@@ -6,6 +6,8 @@ const CustomStyles = createGlobalStyle`
   div#root {
     height: 100vh;
     min-width: 320px;
+    font-family: ${theme`fontFamily.lexend`};
+    color: ${theme`colors.white`};
   }
 
 	body {

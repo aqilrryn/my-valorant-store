@@ -1,5 +1,5 @@
 import React from 'react'
-import tw, { css, styled } from 'twin.macro'
+import tw, { styled } from 'twin.macro'
 import { gql, useQuery } from '@apollo/client'
 
 // import Button from './components/button/Button'
@@ -59,10 +59,7 @@ const App: React.FC = () => {
 
 const Wrapper = styled.ul(() => [
   tw`
-    flex flex-col justify-center items-center h-full max-h-full text-white
-  `,
-  css`
-    background-color: rgba(32, 33, 36, 255);
+    flex flex-col justify-center items-center h-full max-h-full text-white bg-background
   `,
 ])
 

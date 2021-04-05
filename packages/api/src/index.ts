@@ -4,7 +4,7 @@ import store from "./store";
 import weapons from "./weapons";
 
 // Check if required env variables exist
-require("dotenv-safe").config();
+// require("dotenv-safe").config();
 
 const typeDef = gql`
   type Query

@@ -3,17 +3,24 @@ import { getPlayerStore } from "../services/rsoService";
 import Skin from "../skins/Skin";
 
 abstract class Store {
-  static async playerStore(): Promise<StoreType> {
-    const store = await getPlayerStore();
+  static async playerStore(
+    username: string,
+    password: string
+  ): Promise<StoreType> {
+    const store = await getPlayerStore(username, password);
     const skins = await Skin.all();
 
     return {
-      skins: (store ?? []).map((s) => ({
-        uuid: s?.id ?? "",
-        displayName: s?.name ?? "",
-        displayIcon: skins.find((skin) => skin.displayName === s?.name)
-          ?.displayIcon,
-      })),
+      skins: (store ?? []).map((s) => {
+        const skin = skins.find((skin) => skin.displayName === s?.name);
+
+        return {
+          uuid: s?.id ?? "",
+          cost: s?.cost,
+          displayName: s?.name ?? "",
+          displayIcon: skin?.displayIcon,
+        };
+      }),
     };
   }
 }

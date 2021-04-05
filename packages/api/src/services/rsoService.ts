@@ -1,4 +1,5 @@
 const axios = require("axios").default;
+import { AuthenticationError } from "apollo-server-errors";
 import tough, { CookieJar } from "tough-cookie";
 
 const axiosCookieJarSupport = require("axios-cookiejar-support").default;
@@ -10,7 +11,34 @@ const AUTH_URL = "https://auth.riotgames.com/api/v1/authorization";
 const ENTITLEMENTS_URL = "https://entitlements.auth.riotgames.com/api/token/v1";
 const USER_URL = "https://auth.riotgames.com/userinfo";
 
-const authenticate = async (): Promise<
+type Skin = {
+  name: string;
+  id: string;
+  cost?: number;
+};
+
+type StoreOffer = {
+  OfferID: string;
+  IsDirectPurchase: boolean;
+  StartDate: string;
+  Cost: Cost;
+  Rewards: Reward[];
+};
+
+type Cost = {
+  [id: string]: number;
+};
+
+type Reward = {
+  ItemTypeID: string;
+  ItemID: string;
+  Quantity: number;
+};
+
+const authenticate = async (
+  username: string,
+  password: string
+): Promise<
   | {
       headers: {
         Authorization: string;
@@ -39,8 +67,8 @@ const authenticate = async (): Promise<
 
   const credentials = {
     type: "auth",
-    username: process.env["USERNAME"],
-    password: process.env["PASSWORD"],
+    username,
+    password,
   };
 
   response = await axios.put(AUTH_URL, credentials, {
@@ -121,13 +149,13 @@ export const getValorantClientVersion = async (): Promise<
   }`;
 };
 
-export const getPlayerStore = async () => {
+export const getPlayerStore = async (username: string, password: string) => {
   let auth = undefined;
 
   try {
-    auth = await authenticate();
+    auth = await authenticate(username, password);
   } catch (error) {
-    console.log(error);
+    throw new AuthenticationError("Unauthorized");
   }
 
   const headers = auth?.headers;
@@ -172,9 +200,7 @@ export const getPlayerStore = async () => {
     }
   );
 
-  const skins: { name: string; id: string }[] = (response.data[
-    "Skins"
-  ] as any[])
+  const skins: Skin[] = (response.data["Skins"] as any[])
     .concat(response.data["Chromas"] as any[])
     .concat(response.data["SkinLevels"] as any[])
     .map((s: { Name: string; ID: string }) => ({
@@ -182,5 +208,41 @@ export const getPlayerStore = async () => {
       id: s.ID.toLowerCase(),
     }));
 
-  return itemIds.map((itemId) => skins.find((s) => s.id === itemId));
+  response = await axios.get(`https://pd.eu.a.pvp.net/store/v1/offers/`, {
+    jar: cookieJar,
+    withCredentials: true,
+    headers: {
+      ...headers,
+      "X-Riot-ClientVersion": clientVersion,
+      "X-Riot-ClientPlatform": Buffer.from(
+        JSON.stringify({
+          platformType: "PC",
+          platformOS: "Windows",
+          platformOSVersion: "10.0.19042.1.256.64bit",
+          platformChipset: "Unknown",
+        })
+      ).toString("base64"),
+    },
+  });
+
+  const offers: StoreOffer[] = response.data.Offers;
+
+  const result: (Skin | undefined)[] = itemIds
+    .map((itemId) => skins.find((s) => s.id === itemId))
+    .map((skin) => {
+      if (skin) {
+        const offer = offers.find(
+          (offer) => offer.OfferID.toLowerCase() === skin.id.toLowerCase()
+        );
+
+        return {
+          name: skin.name,
+          id: skin.id,
+          cost: offer ? Object.values(offer.Cost)?.[0] : undefined,
+        };
+      }
+      return undefined;
+    });
+
+  return result;
 };

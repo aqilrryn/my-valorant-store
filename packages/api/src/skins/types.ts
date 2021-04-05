@@ -17,6 +17,7 @@ export interface Level {
 
 export interface Skin {
   uuid: string;
+  cost?: number;
   displayName: string;
   themeUuid?: string;
   contentTierUuid?: string;

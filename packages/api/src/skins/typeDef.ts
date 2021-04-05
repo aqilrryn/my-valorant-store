@@ -5,6 +5,7 @@ const typeDef = gql`
     uuid: String
     displayName: String
     displayIcon: String
+    cost: Int
   }
 
   extend type Query {

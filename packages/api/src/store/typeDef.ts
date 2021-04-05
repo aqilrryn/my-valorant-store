@@ -6,7 +6,7 @@ const typeDef = gql`
   }
 
   extend type Query {
-    store: Store
+    store(username: String!, password: String!): Store
   }
 `;
 

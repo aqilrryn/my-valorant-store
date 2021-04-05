@@ -2,7 +2,7 @@
   "name": "my-valorant-store",
   "version": "1.0.0",
   "scripts": {
-    "build": "nodemon packages/api/dist/index.js"
+    "start": "nodemon packages/api/dist/index.js"
   },
   "repository": {
     "type": "git",

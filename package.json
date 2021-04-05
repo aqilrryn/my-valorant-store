@@ -2,7 +2,7 @@
   "name": "my-valorant-store",
   "version": "1.0.0",
   "scripts": {
-    "start": "nodemon packages/api/dist/index.js"
+    "start": "node packages/api/dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,4 @@
     "url": "https://github.com/rafvanpuyvelde/my-valorant-store/issues"
   },
   "homepage": "https://github.com/rafvanpuyvelde/my-valorant-store#readme",
-  "dependencies": {
-    "nodemon": "^2.0.7"
-  }
 }

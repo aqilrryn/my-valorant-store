@@ -12,12 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.21.2",
+    "apollo-server": "^2.22.2",
+    "apollo-server-micro": "^2.22.2",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv-safe": "^8.2.0",
     "graphql": "^15.5.0",
-    "puppeteer": "^8.0.0",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {

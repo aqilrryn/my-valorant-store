@@ -1,8 +1,8 @@
-import { ApolloServer } from '../server/node_modules/apollo-server-micro';
-import { gql } from '../server/node_modules/apollo-server';
-import skins from '../server/src/skins';
-import store from '../server/src/store';
-import weapons from '../server/src/weapons';
+import { ApolloServer } from 'apollo-server-micro';
+import { gql } from 'apollo-server';
+import skins from '../src/skins';
+import store from '../src/store';
+import weapons from '../src/weapons';
 
 const typeDef = gql`
   type Query

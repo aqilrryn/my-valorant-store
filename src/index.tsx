@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 import GlobalStyles from './styles/GlobalStyles';
 import App from './App';
 
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: '/api/graphql',
   cache: new InMemoryCache(),
+  link: createHttpLink({ uri: '/api/graphql' }),
 });
 
 ReactDOM.render(

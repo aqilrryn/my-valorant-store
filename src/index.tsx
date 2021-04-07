@@ -4,11 +4,14 @@ import GlobalStyles from './styles/GlobalStyles';
 import App from './App';
 
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import splitbee from '@splitbee/web';
 
 const client = new ApolloClient({
   uri: 'https://my-valorant-store-api.herokuapp.com/graphql',
   cache: new InMemoryCache(),
 });
+
+splitbee.init();
 
 ReactDOM.render(
   <React.StrictMode>

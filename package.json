@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.14",
+    "@splitbee/web": "^0.2.4",
     "@storybook/addons": "^6.1.21",
     "@storybook/theming": "^6.1.21",
     "graphql": "^15.5.0",

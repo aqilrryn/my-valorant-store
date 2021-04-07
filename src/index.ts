@@ -4,14 +4,26 @@ import { ApolloServer, gql } from "apollo-server-express";
 import skins from "./skins";
 import store from "./store";
 import weapons from "./weapons";
+import player from "./player";
 
 const typeDef = gql`
   type Query
 `;
 
 const server = new ApolloServer({
-  typeDefs: [typeDef, weapons.typeDef, skins.typeDef, store.typeDef],
-  resolvers: [weapons.resolvers, skins.resolvers, store.resolvers],
+  typeDefs: [
+    typeDef,
+    weapons.typeDef,
+    skins.typeDef,
+    store.typeDef,
+    player.typeDef,
+  ],
+  resolvers: [
+    weapons.resolvers,
+    skins.resolvers,
+    store.resolvers,
+    player.resolvers,
+  ],
   introspection: true,
   playground: true,
 });

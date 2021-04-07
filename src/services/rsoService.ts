@@ -1,5 +1,6 @@
 const axios = require("axios").default;
 import { AuthenticationError } from "apollo-server-errors";
+import { Balance } from "src/player/types";
 import tough, { CookieJar } from "tough-cookie";
 
 const axiosCookieJarSupport = require("axios-cookiejar-support").default;
@@ -245,4 +246,41 @@ export const getPlayerStore = async (username: string, password: string) => {
     });
 
   return result;
+};
+
+export const getPlayerBalance = async (
+  username: string,
+  password: string
+): Promise<Balance | undefined> => {
+  let auth = undefined;
+
+  try {
+    auth = await authenticate(username, password);
+  } catch (error) {
+    throw new AuthenticationError("Unauthorized");
+  }
+
+  if (!auth) return;
+
+  const { headers, userId, cookieJar } = auth;
+
+  if (!headers || !userId) return undefined;
+
+  let response = await axios.get(
+    `https://pd.eu.a.pvp.net/store/v1/wallet/${userId}`,
+    {
+      jar: cookieJar,
+      withCredentials: true,
+      headers,
+    }
+  );
+
+  const balance = response?.data
+    ? Object.entries(response.data["Balances"])
+    : undefined;
+
+  return {
+    valorantPoints: balance?.[0]?.[1] as number,
+    radianitePoints: balance?.[1]?.[1] as number,
+  };
 };

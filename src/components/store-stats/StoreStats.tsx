@@ -14,7 +14,7 @@ const StoreStats: React.FC<{
       {!loading ? (
         <div tw="flex flex-col justify-center items-center">
           <Logo variant="grayed" />
-          <p tw="text-white text-3xl mt-6">{time}</p>
+          {time && <p tw="text-white text-3xl mt-6">{time}</p>}
           <div tw="flex justify-between mt-3">
             <p tw="mr-4">
               <span tw="mr-1">V</span>

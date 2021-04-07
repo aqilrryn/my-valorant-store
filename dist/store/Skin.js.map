@@ -1,0 +1,1 @@
+{"version":3,"file":"Skin.js","sourceRoot":"","sources":["../../src/store/Skin.ts"],"names":[],"mappings":";;;;;AAAA,+DAAuC;AAGvC,MAAe,IAAI;IACjB,MAAM,CAAC,KAAK,CAAC,GAAG;QACd,OAAO,CAAC,MAAM,gBAAM,CAAC,GAAG,EAAE,CAAC,CAAC,OAAO,CAAC,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC;IACtD,CAAC;CACF;AAED,kBAAe,IAAI,CAAC"}

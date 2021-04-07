@@ -1,0 +1,1 @@
+{"version":3,"file":"data.js","sourceRoot":"","sources":["../../src/weapons/data.ts"],"names":[],"mappings":";;AAAA,MAAM,OAAO,GAAG;IACd;QACE,KAAK,EAAE,yCAAyC;QAChD,MAAM,EAAE,cAAc;KACvB;IACD;QACE,KAAK,EAAE,eAAe;QACtB,MAAM,EAAE,kBAAkB;KAC3B;CACF,CAAC;AAEF,kBAAe,OAAO,CAAC"}

@@ -10,8 +10,6 @@ export interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ skin, loading }: CardProps) => {
-  console.log(skin);
-
   return (
     <Wrapper isLoading={loading ?? true}>
       {!loading ? (

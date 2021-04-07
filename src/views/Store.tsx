@@ -53,12 +53,15 @@ const Store: React.FC<{
     loading: loadingBalance,
     error: balanceError,
     data: balanceData,
-  } = useQuery<{ balance: PlayerBalance }, Credentials>(PLAYER_BALANCE, {
-    variables: {
-      username: credentials.username,
-      password: credentials.password,
+  } = useQuery<{ player: { balance: PlayerBalance } }, Credentials>(
+    PLAYER_BALANCE,
+    {
+      variables: {
+        username: credentials.username,
+        password: credentials.password,
+      },
     },
-  });
+  );
 
   useEffect(() => {
     if (storeError?.graphQLErrors?.[0]?.message === 'Unauthorized')
@@ -86,8 +89,8 @@ const Store: React.FC<{
         <div tw="mt-11 mb-12">
           <StoreStats
             loading={loadingBalance}
-            valorantPoints={balanceData?.balance?.valorantPoints ?? 0}
-            radianitePoints={balanceData?.balance?.radianitePoints ?? 0}
+            valorantPoints={balanceData?.player?.balance?.valorantPoints}
+            radianitePoints={balanceData?.player?.balance?.radianitePoints}
           />
         </div>
         <ul tw="flex max-h-full justify-center flex-wrap overflow-y-scroll">

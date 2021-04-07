@@ -12,8 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-server": "^2.22.2",
-    "apollo-server-micro": "^2.22.2",
+    "apollo-server-express": "^2.22.2",
     "axios": "^0.21.1",
     "axios-cookiejar-support": "^1.0.1",
     "dotenv-safe": "^8.2.0",

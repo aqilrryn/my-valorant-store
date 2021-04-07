@@ -1,15 +1,15 @@
-import { gql } from "apollo-server";
+import { gql } from "apollo-server-express";
 
 const typeDef = gql`
-  type Skin {
-    uuid: String
+  type Weapon {
+    uuid: ID
     displayName: String
     displayIcon: String
-    cost: Int
+    skins: [Skin]
   }
 
   extend type Query {
-    skins: [Skin]
+    weapons: [Weapon]
   }
 `;
 

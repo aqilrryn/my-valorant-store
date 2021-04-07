@@ -1,5 +1,21 @@
-.build
-build
-web_modules
-node_modules
-.vscode
+# Ignore the compiled output.
+dist/
+
+# TypeScript incremental compilation cache
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node modules
+node_modules/
+
+# Mac OS
+.DS_Store
+
+# .Env files
+.env

@@ -6,6 +6,8 @@ import type { Credentials } from 'types/userTypes';
 import type { Skin } from 'types/weaponTypes';
 import { Card } from '../components/card/Card';
 import Wrapper from '../components/page-wrapper/PageWrapper';
+import NavigationIcon from '../components/navigation-icon/NavigationIcon';
+import { client } from '../index';
 
 const PLAYER_STORE = gql`
   query GetPlayerStore($username: String!, $password: String!) {
@@ -43,8 +45,19 @@ const Store: React.FC<{
     if (!loading && !data) onFailure('network');
   }, [loading, data]);
 
+  const logoutHandler = async () => {
+    // Clear apollo cache
+    await client.clearStore().then(() => {
+      // Clear localstorage
+      localStorage.clear();
+      // Go to root page
+      window.location.href = '/';
+    });
+  };
+
   return (
     <Wrapper>
+      <NavigationIcon icon="logout" size={20} onClick={() => logoutHandler()} />
       <ul tw="flex max-h-full justify-center flex-wrap overflow-y-scroll">
         {(data ? data?.store?.skins : [...Array(4)]).map(
           (skin: Skin, index: number) => (

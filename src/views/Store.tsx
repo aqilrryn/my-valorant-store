@@ -89,7 +89,7 @@ const Store: React.FC<{
   return (
     <Wrapper>
       <NavigationIcon icon="logout" size={20} onClick={() => logoutHandler()} />
-      <div tw="flex flex-col">
+      <div tw="flex flex-col h-full">
         <div tw="mt-11 mb-12">
           <StoreStats
             loading={loadingBalance}

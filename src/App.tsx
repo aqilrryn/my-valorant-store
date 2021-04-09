@@ -9,7 +9,7 @@ const App: React.FC = () => {
   const [credentials, setCredentials] = useState<Credentials>();
 
   return (
-    <div tw="flex justify-center h-full w-full bg-background">
+    <div tw="flex justify-center h-full w-full bg-background overflow-y-scroll">
       {credentials ? (
         <Store
           credentials={credentials}

@@ -41,8 +41,17 @@ export const CountdownTimer: React.FC = () => {
 
   return (
     <p tw="text-3xl">
-      {timeLeft?.hour() ?? '00'}:{timeLeft?.minute() ?? '00'}:
-      {timeLeft?.second() ?? '00'}
+      {timeLeft?.hour() < 10
+        ? `0${timeLeft?.hour()}`
+        : timeLeft?.hour() ?? '00'}
+      :
+      {timeLeft?.minute() < 10
+        ? `0${timeLeft?.minute()}`
+        : timeLeft?.minute() ?? '00'}
+      :
+      {timeLeft?.second() < 10
+        ? `0${timeLeft?.second()}`
+        : timeLeft?.second() ?? '00'}
     </p>
   );
 };

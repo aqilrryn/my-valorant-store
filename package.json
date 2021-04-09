@@ -18,6 +18,7 @@
     "@splitbee/web": "^0.2.4",
     "@storybook/addons": "^6.1.21",
     "@storybook/theming": "^6.1.21",
+    "dayjs": "^1.10.4",
     "graphql": "^15.5.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

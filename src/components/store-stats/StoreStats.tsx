@@ -1,20 +1,22 @@
 import React from 'react';
 import 'twin.macro';
 
+import CountdownTimer from '../countdown/Countdown';
 import Logo from '../logo/Logo';
 
 const StoreStats: React.FC<{
   loading?: boolean;
-  time?: string;
   valorantPoints?: number;
   radianitePoints?: number;
-}> = ({ loading, time, valorantPoints, radianitePoints }) => {
+}> = ({ loading, valorantPoints, radianitePoints }) => {
   return (
     <>
       {!loading ? (
         <div tw="flex flex-col justify-center items-center">
           <Logo variant="grayed" />
-          {time && <p tw="text-white text-3xl mt-6">{time}</p>}
+          <div tw="mt-6">
+            <CountdownTimer />
+          </div>
           <div tw="flex justify-between mt-3">
             <p tw="mr-4">
               <span tw="mr-1">V</span>

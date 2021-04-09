@@ -13,7 +13,6 @@ const Template: Story = props => <StoreStats {...props} />;
 export const Default = Template.bind({});
 Default.args = {
   loading: false,
-  time: '16:00:00',
   valorantPoints: 2000,
   radianitePoints: 45,
 };

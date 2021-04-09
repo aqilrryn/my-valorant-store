@@ -64,13 +64,17 @@ const Store: React.FC<{
   );
 
   useEffect(() => {
-    if (storeError?.graphQLErrors?.[0]?.message === 'Unauthorized')
+    if (
+      storeError?.graphQLErrors?.[0]?.message === 'Unauthorized' ||
+      balanceError?.graphQLErrors?.[0]?.message === 'Unauthorized'
+    )
       onFailure('auth');
-  }, [storeError]);
+  }, [storeError, balanceError]);
 
   useEffect(() => {
-    if (!loadingStore && !storeData) onFailure('network');
-  }, [loadingStore, storeData]);
+    if ((!loadingStore && !storeData) || (!loadingBalance && !balanceData))
+      onFailure('network');
+  }, [loadingStore, storeData, loadingBalance, balanceData]);
 
   const logoutHandler = async () => {
     // Clear apollo cache

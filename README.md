@@ -1,9 +1,8 @@
-# Snowpack + React + Emotion + TypeScript + Tailwind + Twin
+# Personal valorant store viewer
 
-- [Snowpack](https://www.snowpack.dev/)
-- [React](https://reactjs.org/)
-- [Emotion](https://emotion.sh/docs/introduction)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Twin](https://github.com/ben-rogerson/twin.macro)
+Full stack project that allows the user to see the contents of there personalized valorant store.
+The project consists of both a frontend layer (React) and an API that allows us to communicate with the game API directly.
+The frontend is hostend on Vercel at [myvalorant.store](https://www.myvalorant.store/)
 
-**For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" or "@snowpack/plugin-parcel" to your `snowpack.config.json` config file.
+An example of the app flow is shown below, the login step is omitted for security reasons.
+[![App flow example](https://photos.app.goo.gl/RaMFkAVv4a7EnzP98 "App flow, Raf Vanpuyvelde")]
